@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>app</directory>
+        </include>
+    </source>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+
+        <!-- 4 tours au lieu de 12 : le hachage reste correct mais devient
+             instantane. Uniquement en test, jamais ailleurs. -->
+        <env name="BCRYPT_ROUNDS" value="4"/>
+
+        <env name="CACHE_STORE" value="array"/>
+
+        <!-- BASE DE TEST SEPAREE.
+             RefreshDatabase vide la base a chaque test : la pointer sur `cpe`
+             detruirait les donnees de developpement. On reste sur MySQL et non
+             SQLite, parce que le schema utilise des colonnes enum et que
+             tester sur un autre moteur que la production laisserait passer des
+             differences. -->
+        <env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_DATABASE" value="cpe_test"/>
+
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="PULSE_ENABLED" value="false"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+
+        <!-- Aucune vraie cle en test : tout appel IA est simule (Http::fake). -->
+        <env name="ANTHROPIC_API_KEY" value="cle-de-test"/>
+    </php>
+</phpunit>
