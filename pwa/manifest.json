@@ -1,0 +1,17 @@
+{
+  "name": "Communauté Prions Ensemble",
+  "short_name": "Prions Ensemble",
+  "description": "Bible complète, méditations, quiz et accompagnement pastoral — par Dr. Stéphane NIAZALE",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f2e7",
+  "theme_color": "#161a33",
+  "lang": "fr",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

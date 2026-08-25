@@ -1,0 +1,54 @@
+# ============ Secrets ============
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.keystore
+*.jks
+google-services.json
+GoogleService-Info.plist
+
+# ============ Laravel (api/) ============
+api/vendor/
+api/node_modules/
+api/public/build/
+api/public/hot
+api/public/storage
+api/storage/*.key
+api/storage/framework/cache/*
+api/storage/framework/sessions/*
+api/storage/framework/views/*
+api/storage/logs/*
+api/bootstrap/cache/*
+api/.phpunit.result.cache
+api/database/*.sqlite
+
+# ============ Flutter (mobile/) ============
+mobile/.dart_tool/
+mobile/.packages
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/ios/Pods/
+mobile/ios/.symlinks/
+mobile/ios/Flutter/Flutter.framework
+mobile/ios/Flutter/Generated.xcconfig
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/android/key.properties
+
+# ============ Editeurs ============
+.vscode/
+.idea/
+*.iml
+*.swp
+
+# ============ Systeme ============
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============ Divers ============
+*.log
+nettoyage.ps1
