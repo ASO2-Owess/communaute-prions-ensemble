@@ -1,0 +1,28 @@
+# Normalisation des fins de ligne
+#
+# Windows termine ses lignes par CRLF, Linux et macOS par LF. Sans ce fichier,
+# chaque machine impose son style et Git signale des modifications sur des
+# fichiers que personne n'a touches. Ici on fixe la regle une fois pour toutes :
+# le depot stocke du LF, et chacun fait ce qu'il veut en local.
+
+# Par defaut : detection auto, stockage en LF dans le depot
+* text=auto eol=lf
+
+# Scripts Windows : doivent rester en CRLF pour s'executer correctement
+*.ps1  text eol=crlf
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+
+# Fichiers binaires : Git ne doit JAMAIS y toucher (il les corromprait)
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.ico  binary
+*.pdf  binary
+*.ttf  binary
+*.otf  binary
+*.woff binary
+*.woff2 binary
+*.jks  binary
+*.keystore binary
