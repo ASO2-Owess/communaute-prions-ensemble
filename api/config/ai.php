@@ -23,7 +23,31 @@ return [
 
     'max_tokens' => (int) env('ANTHROPIC_MAX_TOKENS', 2000),
 
-    'timeout' => (int) env('ANTHROPIC_TIMEOUT', 60),
+    /*
+    |--------------------------------------------------------------------------
+    | Delai d'attente de l'appel a l'IA
+    |--------------------------------------------------------------------------
+    |
+    | ABAISSE DE 60 A 25 SECONDES, et voici pourquoi.
+    |
+    | `php artisan serve` ne traite QU'UNE REQUETE A LA FOIS. Pendant qu'il
+    | attend la reponse de l'IA, l'API entiere est gelee : la progression, les
+    | lectures, le classement, tout attend derriere. Un membre qui ouvre une
+    | etude bloquait donc l'application pendant une minute — pour lui ET pour
+    | tous les autres.
+    |
+    | Vingt-cinq secondes suffisent largement a une generation normale, et
+    | plafonnent les degats quand l'IA ne repond pas.
+    |
+    | LA VRAIE SOLUTION, pour plus tard : sortir la generation de la requete
+    | HTTP en la confiant a une file d'attente (`QUEUE_CONNECTION=database` et
+    | `php artisan queue:work`). Le serveur repond alors immediatement
+    | « en cours de preparation », et rien ne bloque. C'est aussi ce qui
+    | correspond le mieux au circuit reel : generation, puis relecture
+    | pastorale, puis publication.
+    |
+    */
+    'timeout' => (int) env('ANTHROPIC_TIMEOUT', 25),
 
     /*
     | Nombre de generations qu'un membre peut declencher par jour.

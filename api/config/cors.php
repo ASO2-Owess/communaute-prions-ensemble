@@ -1,27 +1,44 @@
 <?php
 
-/**
- * Origines autorisees a appeler l'API depuis un navigateur.
- *
- * Le defaut de Laravel autorise TOUTES les origines ('*'). Acceptable en
- * developpement, dangereux en ligne : n'importe quel site pourrait faire
- * appeler notre API par le navigateur de nos membres.
- *
- * Nos jetons sont de type Bearer (pas de cookie), ce qui limite deja la
- * portee d'un abus — mais restreindre les origines ne coute rien.
- */
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Partage de ressources entre origines (CORS)
+    |--------------------------------------------------------------------------
+    |
+    | Un navigateur refuse par defaut qu'une page servie par une origine
+    | (http://localhost:53712, celle que Flutter web tire au hasard) appelle
+    | une autre origine (http://127.0.0.1:8000, Laravel). C'est une protection
+    | essentielle : sans elle, n'importe quel site pourrait faire des requetes
+    | a ta banque avec tes cookies.
+    |
+    | Le serveur leve cette barriere pour les origines qu'il accepte, en
+    | repondant a une requete preliminaire (OPTIONS) envoyee par le navigateur.
+    |
+    | Ce fichier n'existait pas : Laravel s'en passe tant qu'aucun client web
+    | n'appelle l'API. Des qu'on lance `flutter run -d chrome`, il devient
+    | indispensable.
+    |
+    | ATTENTION AVANT LA MISE EN PRODUCTION : remplacer le motif ci-dessous par
+    | la liste EXACTE des origines autorisees. Ouvrir a tout le monde n'a de
+    | sens qu'en developpement, ou les origines changent a chaque lancement.
+    |
+    */
 
     'paths' => ['api/*'],
 
     'allowed_methods' => ['*'],
 
-    // Liste explicite, lue depuis .env. En production : uniquement la PWA.
-    'allowed_origins' => array_filter(
-        array_map('trim', explode(',', (string) env('CORS_ALLOWED_ORIGINS', '')))
-    ),
+    // En developpement, Flutter web choisit un port different a chaque
+    // lancement : on autorise donc tout localhost, quel que soit le port.
+    // `allowed_origins_patterns` accepte des expressions regulieres, la ou
+    // `allowed_origins` veut des chaines exactes.
+    'allowed_origins' => [],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [
+        '#^https?://(localhost|127\.0\.0\.1)(:\d+)?$#',
+    ],
 
     'allowed_headers' => ['*'],
 
@@ -29,7 +46,9 @@ return [
 
     'max_age' => 0,
 
-    // false : on n'utilise pas de cookies de session, seulement des jetons.
+    // false : l'API s'authentifie par jeton Bearer, pas par cookie de session.
+    // Passer a true autoriserait le navigateur a joindre les cookies aux
+    // requetes entre origines — inutile ici, et une surface d'attaque de plus.
     'supports_credentials' => false,
 
 ];
